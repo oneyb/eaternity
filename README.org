@@ -1,0 +1,4 @@
+* eaternity climate-friendly menus - [[http://eaternity.org]]
+
+  This contains the scripts for LCA analyses that I do for eaternity.  That
+  is, the main purpose is to keep my python scripts running [[https://docs.brightwaylca.org/][Brightway2]] here.
