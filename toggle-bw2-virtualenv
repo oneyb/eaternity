@@ -1,0 +1,10 @@
+#!/bin/bash
+dir=/d/documents/eaternity/bw2
+
+if [[ -n "$(echo $PS1 | grep $dir)" ]];then
+    echo activating
+    source $dir/bin/activate
+else
+    echo deactivating
+    deactivate
+fi
