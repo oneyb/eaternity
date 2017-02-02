@@ -1,9 +1,9 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
 # sudo apt-get update
 # sudo apt-get install python3-scipy python3-numpy python3-nose        \
 #      python3-pip python3-lxml cython python3-virtualenv virtualenvwrapper \
-#      build-essential libsuitesparse-dev swig
+#      build-essential libsuitesparse-dev swig ipython3-notebook
 
 # su $USER
 if [[ $# -eq 0 ]]; then
