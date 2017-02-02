@@ -2,3 +2,21 @@
 
   This contains the scripts for LCA analyses that I do for eaternity.  That
   is, the main purpose is to keep my python scripts running [[https://docs.brightwaylca.org/][Brightway2]] here.
+
+Below is a handy function for working in Brightway2 in a virtual environment
+(see [[file:.install-brightway.sh][install script]])
+#+begin_src bash
+
+function turn-on-bw2-virtualenv ()
+{
+    dir=/d/documents/eaternity/bw2
+    if [ -z "$_OLD_VIRTUAL_PATH" ]; then
+        echo activating
+        source $dir/bin/activate
+    else
+        echo deactivating
+        deactivate
+    fi
+}
+
+#+end_src
