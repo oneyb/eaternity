@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/d/documents/eaternity/bw2/bin/ipython3
+#  #!/usr/bin/env python3
 
 #  A script with an LCA calculation of olive oil using a SimaPro data set and Brightway2
 #
