@@ -1,10 +1,22 @@
-# from: https://docs.brightwaylca.org/advanced-installation.html#linux
-# for python 3 on debian jessy
-
 # In my .bashrc
 function get-bash-functions-for-bw2 ()
 {
-    source /d/documents/eaternity/eaternity/install-brightway-functions.bash
+    source /d/documents/eaternity/eaternity/eaternity-brightway-functions.bash
+}
+
+xdotool type "io-bw2"
+
+function io-bw2 ()
+{
+    dir=/d/documents/eaternity/eaternity/
+    if [ -z $(which conda) ]; then
+        cd $dir
+        xdotool type "jupyter-notebook --notebook-dir=$dir --browser=firefox"
+        flip-bw2-virtualenv-conda
+    else
+        flip-bw2-virtualenv-conda
+        cd ~
+    fi
 }
 
 function flip-bw2-virtualenv-conda ()
@@ -25,7 +37,62 @@ function flip-bw2-virtualenv-conda ()
     cd -
 }
 
+# from: https://docs.brightwaylca.org/advanced-installation.html
+# for python 3 on debian jessy
+function install-conda()
+{
+    dir=/d/documents/eaternity/bw2-py
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    bash Miniconda3-latest-Linux-x86_64.sh
+    echo $dir
+    conda install -q -y conda && conda update -q conda
+}
 
+function install-brightway-dev-plus-deps-with-conda ()
+{
+    if [[ $# -eq 0 ]]; then
+        dir=/d/documents/eaternity/bw2-py
+    else
+        dir=$1
+    fi
+    if [ -f $dir ]; then
+        cd $dir
+    else
+        mkdir -p $dir
+    fi
+
+    conda config --system --add channels conda-forge
+    conda create -y -n bw2 python=3.5
+
+    source activate bw2
+    cd -
+
+    conda install wheel && conda update -q pip wheel setuptools
+    conda install -q -y -c haasad pypardiso
+    conda install -q -y ipython ipython-notebook jupyter matplotlib flask lxml \
+          requests nose docopt whoosh xlsxwriter xlrd unidecode appdirs future \
+          psutil unicodecsv wrapt numpy
+    pip install --no-cache-dir brightway2
+    conda clean -tipsy
+    # Activity browser
+    conda install networkx seaborn matplotlib
+    pip install https://bitbucket.org/cmutel/activity-browser/get/2.0.zip
+    if [[ $2 = "dev" ]]; then
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-data#egg=bw2data
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-calc#egg=bw2calc
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-ui#egg=bw2ui
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-analyzer#egg=bw2analyzer
+    # else
+    #     pip install bw2data bw2calc bw2ui bw2analyzer
+    fi
+
+    # Finish
+    deactivate
+    cd -
+}
+
+# from: https://docs.brightwaylca.org/advanced-installation.html#linux
+# for python 3 on debian jessy
 function install-brightway-dev-plus-deps-on-debian ()
 {
     if [[ $# -eq 0 ]]; then
@@ -109,54 +176,3 @@ function install-deps-of-brightway ()
          libsuitesparse-dev swig mercurial
 }
 
-function install-conda()
-{
-    dir=/d/documents/eaternity/bw2-py
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    bash Miniconda3-latest-Linux-x86_64.sh
-    echo $dir
-    conda install -q -y conda && conda update -q conda
-}
-
-function install-brightway-dev-plus-deps-with-conda ()
-{
-    if [[ $# -eq 0 ]]; then
-        dir=/d/documents/eaternity/bw2-py
-    else
-        dir=$1
-    fi
-    if [ -f $dir ]; then
-        cd $dir
-    else
-        mkdir -p $dir
-    fi
-
-    conda config --system --add channels conda-forge
-    conda create -y -n bw2 python=3.5
-
-    source activate bw2
-    cd -
-
-    conda install wheel && conda update -q pip wheel setuptools
-    conda install -q -y -c haasad pypardiso
-    conda install -q -y ipython ipython-notebook jupyter matplotlib flask lxml \
-          requests nose docopt whoosh xlsxwriter xlrd unidecode appdirs future \
-          psutil unicodecsv wrapt numpy
-    pip install --no-cache-dir brightway2
-    conda clean -tipsy
-    # Activity browser
-    conda install networkx seaborn matplotlib
-    pip install https://bitbucket.org/cmutel/activity-browser/get/2.0.zip
-    if [[ $2 = "dev" ]]; then
-        pip install -e hg+https://bitbucket.org/cmutel/brightway2-data#egg=bw2data
-        pip install -e hg+https://bitbucket.org/cmutel/brightway2-calc#egg=bw2calc
-        pip install -e hg+https://bitbucket.org/cmutel/brightway2-ui#egg=bw2ui
-        pip install -e hg+https://bitbucket.org/cmutel/brightway2-analyzer#egg=bw2analyzer
-    # else
-    #     pip install bw2data bw2calc bw2ui bw2analyzer
-    fi
-
-    # Finish
-    deactivate
-    cd -
-}
