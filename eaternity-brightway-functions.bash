@@ -11,7 +11,7 @@ function flip-bw2-virtualenv-conda ()
 {
     dir=/d/documents/eaternity/bw2-py
     cd $dir
-    if [ -z "which conda" ]; then
+    if [ -z $(which conda) ]; then
         echo activating
         export PATH="$dir/bin:$PATH"
         source activate bw2
@@ -147,14 +147,14 @@ function install-brightway-dev-plus-deps-with-conda ()
     # Activity browser
     conda install networkx seaborn matplotlib
     pip install https://bitbucket.org/cmutel/activity-browser/get/2.0.zip
-    # if [[ $2 = "dev" ]]; then
-    #     pip3 install -e hg+https://bitbucket.org/cmutel/brightway2-data#egg=bw2data
-    #     pip3 install -e hg+https://bitbucket.org/cmutel/brightway2-calc#egg=bw2calc
-    #     pip3 install -e hg+https://bitbucket.org/cmutel/brightway2-ui#egg=bw2ui
-    #     pip3 install -e hg+https://bitbucket.org/cmutel/brightway2-analyzer#egg=bw2analyzer
+    if [[ $2 = "dev" ]]; then
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-data#egg=bw2data
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-calc#egg=bw2calc
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-ui#egg=bw2ui
+        pip install -e hg+https://bitbucket.org/cmutel/brightway2-analyzer#egg=bw2analyzer
     # else
-    #     pip3 install bw2data bw2calc bw2ui bw2analyzer
-    # fi
+    #     pip install bw2data bw2calc bw2ui bw2analyzer
+    fi
 
     # Finish
     deactivate
