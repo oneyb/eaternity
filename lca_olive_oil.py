@@ -6,7 +6,6 @@
 from brightway2 import *
 
 
-
 # In[2]:
 
 projects.set_current('Olive oil')
@@ -33,15 +32,14 @@ sp.migrate('simapro-ecoinvent-3.3')
 sp.migrate('default-units')
 
 
-for d in sp:
-    print(type(d))
-
 # In[33]:
 
 sp.match_database('ecoinvent 3.3', ignore_categories=True)
 
 
 # In[34]:
+
+sp2.match_database('ecoinvent 3.3', ignore_categories=True)
 
 
 # In[35]:
