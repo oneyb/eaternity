@@ -1,2 +1,5 @@
 examples/
+ioconnor-original-ipynb/
+.ipynb_checkpoints/
+__pycache__/
 template_bw2.py
