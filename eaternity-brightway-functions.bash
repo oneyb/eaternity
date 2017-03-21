@@ -11,9 +11,11 @@ function io-bw2 ()
     dir=/d/documents/eaternity/eaternity/
     if [ -z $(which conda) ]; then
         cd $dir
+        PROMPT_COMMAND='echo -ne "\033]0;Brightway2\007"'
         xdotool type "jupyter-notebook --notebook-dir=$dir --browser=firefox"
         flip-bw2-virtualenv-conda
     else
+        PROMPT_COMMAND='echo -ne "\033]0;Terminal\007"'
         flip-bw2-virtualenv-conda
         cd ~
     fi
@@ -21,24 +23,36 @@ function io-bw2 ()
 
 function flip-bw2-virtualenv-conda ()
 {
-    dir=/d/documents/eaternity/bw2-py
-    cd $dir
+    _dir=/d/documents/eaternity/bw2-py
+    cd $_dir
     if [ -z $(which conda) ]; then
         echo activating
-        export PATH="$dir/bin:$PATH"
+        export PATH="$_dir/bin:$PATH"
         source activate bw2
-        PROMPT_COMMAND='echo -ne "\033]0;Brightway2\007"'
     else
         echo deactivating
         source deactivate
-        PROMPT_COMMAND='echo -ne "\033]0;Terminal\007"'
         export PATH=$(echo $PATH | sed -r 's/^[^:]+://g')
     fi
     cd -
 }
 
+function brightway-update()
+{
+    if [ -z $(which conda) ]; then
+        _dir=/d/documents/eaternity/bw2-py
+        cd $_dir
+        echo activating
+        export PATH="$_dir/bin:$PATH"
+        source activate bw2
+        cd -
+    fi
+    conda update conda
+    # conda update anaconda
+    pip install -U --no-deps brightway2 bw2data bw2calc bw2analyzer bw2ui bw2io bw2parameters
+}
+
 # from: https://docs.brightwaylca.org/advanced-installation.html
-# for python 3 on debian jessy
 function install-conda()
 {
     dir=/d/documents/eaternity/bw2-py
@@ -82,8 +96,8 @@ function install-brightway-dev-plus-deps-with-conda ()
         pip install -e hg+https://bitbucket.org/cmutel/brightway2-calc#egg=bw2calc
         pip install -e hg+https://bitbucket.org/cmutel/brightway2-ui#egg=bw2ui
         pip install -e hg+https://bitbucket.org/cmutel/brightway2-analyzer#egg=bw2analyzer
-    # else
-    #     pip install bw2data bw2calc bw2ui bw2analyzer
+        # else
+        #     pip install bw2data bw2calc bw2ui bw2analyzer
     fi
 
     # Finish
